@@ -19,6 +19,7 @@ DECK_GL_PANEL_EXPRESS_JS = (
     "https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@^8.0.0/dist/index.js"
 )
 MAPBOX_GL_JS = "https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"
+MAPBOX_GL_CSS = "https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"
 
 
 class PyDeckPlot(HTMLBox):
@@ -27,6 +28,11 @@ class PyDeckPlot(HTMLBox):
     __implementation__ = PYDECK_TS_STR
 
     __javascript__ = [DECK_GL_PANEL_EXPRESS_JS, MAPBOX_GL_JS]
+    __js_require__ = {
+        "paths": {"pydeck": DECK_GL_PANEL_EXPRESS_JS,},
+        "exports": {"pydeck": "PyDeck",},
+    }
+    __css__ = [MAPBOX_GL_CSS]
 
     json_input = JSON()
     mapbox_api_key = String()

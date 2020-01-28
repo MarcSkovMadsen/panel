@@ -30,7 +30,7 @@ export class PyDeckPlotView extends HTMLBoxView {
     render(): void {
         super.render()
 
-        if (!(window as any).createDeck) { return }
+        if (!(window as any).createDeck) { return; }
 
         const container = this.el.appendChild(div({ class: "deckgl", style: { height: "400px", width: "800px" } }));
 
