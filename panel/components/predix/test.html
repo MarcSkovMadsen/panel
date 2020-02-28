@@ -1,0 +1,44 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/1.5.0/lib/">
+<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="iron-icon/iron-icon.html">
+<link rel="import" href="iron-icons/iron-icons.html">
+<link rel="import" href="paper-button/paper-button.html">
+<link rel="import" href="paper-checkbox/paper-checkbox.html">
+<link rel="import" href="paper-tabs/paper-tabs.html">
+<link rel="import" href="paper-toggle-button/paper-toggle-button.html">
+<style is="custom-style">
+    :root {
+        --paper-tabs-selection-bar-color: var(--paper-light-blue-900);
+        --paper-tab-ink: var(--paper-light-blue-100);
+
+        --paper-tabs: {
+            color: white;
+            background-color: var(--paper-light-blue-500);
+        }
+
+        ;
+    }
+</style>
+
+<div>
+    <paper-button raised>
+        <iron-icon icon="check"></iron-icon>OK
+    </paper-button>
+    <paper-button raised>
+        <iron-icon icon="clear"></iron-icon>Cancel
+    </paper-button>
+</div>
+
+<p>
+    <paper-checkbox>Checkbox</paper-checkbox>
+</p>
+
+<p>
+    <paper-toggle-button></paper-toggle-button>
+</p>
+
+<paper-tabs selected="0">
+    <paper-tab>TAB 1</paper-tab>
+    <paper-tab>TAB 2</paper-tab>
+    <paper-tab>TAB 3</paper-tab>
+</paper-tabs>

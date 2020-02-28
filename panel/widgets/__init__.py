@@ -23,4 +23,5 @@ from .select import (# noqa
     AutocompleteInput, CheckBoxGroup, CheckButtonGroup, CrossSelector,
     MultiSelect, RadioButtonGroup, RadioBoxGroup, Select, ToggleGroup
 )
+#from .web_component import WebComponent
 from .tables import DataFrame # noqa

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf">
+    <title>Document</title>
+    <script src="https://www.predix-ui.com/bower_components/webcomponentsjs/webcomponents-hi.js"></script>
+    <link rel="import" href="bower_components/px-spinner/px-spinner.html" />
+    <link rel="import" href="bower_components/px-app-nav/px-app-nav.html" />
+    <link rel="import" href="bower_components/px-kpi/px-kpi.html" />
+    <link rel="import" href="bower_components/px-heatmap-grid/px-heatmap-grid.html" />
+    <link rel="import" href="bower_components/px-timeline/px-timeline.html" />
+    <link rel="import" href="bower_components/px-notification/px-notification.html" />
+    <style include="px-dark-theme-styles" is="custom-style"></style>
+    <link rel="import" href="bower_components/px-dark-theme/px-dark-theme-styles.html" />
+
+
+</head>
+
+<body>
+    <px-app-nav
+        items='[{"label":"Home","id":"home","icon":"px-fea:home"},{"label":"Alerts","id":"alerts","icon":"px-fea:alerts","metadata":{"openCases":"12","closedCases":"82"}},{"label":"Assets","id":"assets","icon":"px-fea:asset","children":[{"label":"Asset #1","id":"a1"},{"label":"Asset #2","id":"a2"}]},{"label":"Dashboards","id":"dashboards","icon":"px-fea:dashboard","children":[{"label":"See Live Truck View","id":"trucks","icon":"px-obj:truck"},{"label":"Track Orders","id":"orders","icon":"px-fea:orders"},{"label":"Analyze Invoices","id":"invoices","icon":"px-fea:templates"}]}]'
+        selected-route='["home"]'
+        selected-meta='{"item":{"label":"Home","id":"home","icon":"px-fea:home"},"path":[{"label":"Home","id":"home","icon":"px-fea:home"}],"route":["home"],"parent":null,"children":[],"siblings":[{"label":"Home","id":"home","icon":"px-fea:home"},{"label":"Alerts","id":"alerts","icon":"px-fea:alerts","metadata":{"openCases":"12","closedCases":"82"}},{"label":"Assets","id":"assets","icon":"px-fea:asset","children":[{"label":"Asset #1","id":"a1"},{"label":"Asset #2","id":"a2"}]},{"label":"Dashboards","id":"dashboards","icon":"px-fea:dashboard","children":[{"label":"See Live Truck View","id":"trucks","icon":"px-obj:truck"},{"label":"Track Orders","id":"orders","icon":"px-fea:orders"},{"label":"Analyze Invoices","id":"invoices","icon":"px-fea:templates"}]}]}'>
+    </px-app-nav>
+    <br />
+    <br />
+    <br />
+    <px-kpi spark-type="line" label="Orders" value="30M" uom="USD" status-icon="px-nav:up" status-color="green"
+        status-label="12%"
+        spark-data='[{"x":1397102460000,"y":0.56},{"x":1397139660000,"y":0.4},{"x":1397177400000,"y":0.43},{"x":1397228040000,"y":0.33},{"x":1397248260000,"y":0.47},{"x":1397291280000,"y":0.41},{"x":1397318100000,"y":0.26},{"x":1397342100000,"y":0.42},{"x":1397390820000,"y":0.27},{"x":1397408100000,"y":0.38},{"x":1397458800000,"y":0.36},{"x":1397522940000,"y":0.32}]'>
+    </px-kpi>
+    <px-heatmap-grid
+        heatmap-data='[{"row":"Application 1","col":"Operator 1","value":16.639},{"row":"Application 1","col":"Operator 2","value":55.464},{"row":"Application 1","col":"Operator 3","value":91.049},{"row":"Application 1","col":"Operator 4","value":21.692},{"row":"Application 1","col":"Operator 5","value":63.163},{"row":"Application 1","col":"Operator 6","value":37.594},{"row":"Application 2","col":"Operator 1","value":61.897},{"row":"Application 2","col":"Operator 2","value":47.479},{"row":"Application 2","col":"Operator 3","value":82.82},{"row":"Application 2","col":"Operator 4","value":94.846},{"row":"Application 2","col":"Operator 5","value":6.829},{"row":"Application 2","col":"Operator 6","value":66.3},{"row":"Application 3","col":"Operator 1","value":74.379},{"row":"Application 3","col":"Operator 2","value":56.9},{"row":"Application 3","col":"Operator 3","value":44.128},{"row":"Application 3","col":"Operator 4","value":16.892},{"row":"Application 3","col":"Operator 5","value":3.908},{"row":"Application 3","col":"Operator 6","value":73.115},{"row":"Application 4","col":"Operator 1","value":61.805},{"row":"Application 4","col":"Operator 2","value":29.263},{"row":"Application 4","col":"Operator 3","value":47.576},{"row":"Application 4","col":"Operator 4","value":34.015},{"row":"Application 4","col":"Operator 5","value":29.5},{"row":"Application 4","col":"Operator 6","value":52.444},{"row":"Application 5","col":"Operator 1","value":22.53},{"row":"Application 5","col":"Operator 2","value":49.097},{"row":"Application 5","col":"Operator 3","value":29.787},{"row":"Application 5","col":"Operator 4","value":68.058},{"row":"Application 5","col":"Operator 5","value":34.698},{"row":"Application 5","col":"Operator 6","value":36.149},{"row":"Application 6","col":"Operator 1","value":98.669},{"row":"Application 6","col":"Operator 2","value":44.839},{"row":"Application 6","col":"Operator 3","value":79.367},{"row":"Application 6","col":"Operator 4","value":24.793},{"row":"Application 6","col":"Operator 5","value":9.023},{"row":"Application 6","col":"Operator 6","value":32.88},{"row":"Application 7","col":"Operator 1","value":83.108},{"row":"Application 7","col":"Operator 2","value":42.316},{"row":"Application 7","col":"Operator 3","value":66.263},{"row":"Application 7","col":"Operator 4","value":72.103},{"row":"Application 7","col":"Operator 5","value":87.811},{"row":"Application 7","col":"Operator 6","value":63.949},{"row":"Application 8","col":"Operator 1","value":15.338},{"row":"Application 8","col":"Operator 2","value":39.84},{"row":"Application 8","col":"Operator 3","value":45.119},{"row":"Application 8","col":"Operator 4","value":5.52},{"row":"Application 8","col":"Operator 5","value":5.221},{"row":"Application 8","col":"Operator 6","value":47.349},{"row":"Application 9","col":"Operator 1","value":73.392},{"row":"Application 9","col":"Operator 2","value":85.513},{"row":"Application 9","col":"Operator 3","value":67.359},{"row":"Application 9","col":"Operator 4","value":38.903},{"row":"Application 9","col":"Operator 5","value":59.048},{"row":"Application 9","col":"Operator 6","value":15.919},{"row":"Application 10","col":"Operator 1","value":75.712},{"row":"Application 10","col":"Operator 2","value":47.056},{"row":"Application 10","col":"Operator 3","value":96.009},{"row":"Application 10","col":"Operator 4","value":56.849},{"row":"Application 10","col":"Operator 5","value":10.211},{"row":"Application 10","col":"Operator 6","value":48.251}]'
+        scale-min="0" scale-max="100" aggregation-type="Disabled"></px-heatmap-grid>
+    <px-timeline
+        timeline-data='[{"metaData":{"editedBy":"Alison Jones","editedDate":"2017-12-04 14:12:00-07","editorTitle":"Head Maintenance Technician","customIcon":"px-fea:administration"},"content":{"title":"Engine Inspection at Caledonia Shop","bodyType":"Video","body":[{"video":"https://www.youtube.com/embed/VATyEPvuQy8","headline":"Results of shop engine inspection","host":"Remote","text":"Findings attached"}]}},{"metaData":{"editedBy":"John Smith","editedDate":"2018-01-27 18:28:10-07","editorTitle":"Director of Maintenance","customIcon":"px-utl:confirmed"},"content":{"title":"A-check","bodyType":"text","body":[{"text":"A-check conducted at PredixAir maintenance hangar 3 after 260 cycles."}]}},{"metaData":{"editedBy":"PredixAir Operations","editedDate":"2018-02-12 06:37:00-07","customIcon":"px-obj:airplane"},"content":{"title":"SFO > CVG","bodyType":"LIST","body":[{"key":"Takeoff","value":"SFO - Mon Sep 12 2016 06:37:00-07"},{"key":"Arrival","value":"CVG - Mon Sep 12 2016 3:15:00-04"},{"key":"Flight Time","value":"5 hours, 43 minutes"}]}},{"metaData":{"editedBy":"GE Digital","editedDate":"2018-02-23 00:00:00-07"},"content":{"title":"Contact Details","bodyType":"table","body":[{"first":"Valentine","last":"Meyer","email":"valentinemeyer@scentric.com"},{"first":"Silva","last":"Alexander","email":"silvaalexander@gmail.com"},{"first":"Hopkins","last":"Wong","email":"hopkinswong@hotmail.com"},{"first":"Joe","last":"Sherman","email":"joejoe@yahoo.com"},{"first":"Jane","last":"Bartlett","email":"jane@scentric.com"}]}}]'
+        date-format="MMM D, YYYY HH:MM" editable enhanced>
+    </px-timeline>
+    <px-notification type="healthy" status-icon="px-utl:filter" content="26 Filters" action-icon="px-nav:close" opened>
+    </px-notification>
+</body>
+
+</html>
