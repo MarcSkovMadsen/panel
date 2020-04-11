@@ -52,6 +52,11 @@ class Button(WiredBase):
     clicks = param.Integer()
     elevation = param.Integer(ELEVATION_DEFAULT, bounds=ELEVATION_BOUNDS)
 
+    def __init__(self, **params):
+        if "height" not in params:
+            params["height"]=40
+        super().__init__(**params)
+
     def _get_html_from_parameters_to_watch(self, **params) -> str:
         return f"<wired-button>{params['name']}</wired-button>"
 
@@ -61,6 +66,12 @@ class Checkbox(WiredBase):
     parameters_to_watch = param.List(["name"])
 
     value = param.Boolean()
+
+    def __init__(self, **params):
+        if "height" not in params:
+            params["height"]=40
+
+        super().__init__(**params)
 
     def _get_html_from_parameters_to_watch(self, **params) -> str:
         return f"<wired-checkbox>{params['name']}</wired-checkbox>"
