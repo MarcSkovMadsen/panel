@@ -40,15 +40,15 @@ def _server_url(url, port):
     else:
         return 'http://%s:%d%s' % (url.split(':')[0], port, "/")
 
-def _eval_panel(panel, server_id, title, doc):
-    from ..template import Template
+def _eval_panel(panel, server_id, title, location, doc):
+    from ..template import BaseTemplate
     from ..pane import panel as as_panel
 
     if isinstance(panel, FunctionType):
         panel = panel()
-    if isinstance(panel, Template):
-        return panel._modify_doc(server_id, title, doc)
-    return as_panel(panel)._modify_doc(server_id, title, doc)
+    if isinstance(panel, BaseTemplate):
+        return panel._modify_doc(server_id, title, doc, location)
+    return as_panel(panel)._modify_doc(server_id, title, doc, location)
 
 #---------------------------------------------------------------------
 # Public API
@@ -101,7 +101,7 @@ def unlocked():
 
 
 def serve(panels, port=0, websocket_origin=None, loop=None, show=True,
-          start=True, title=None, verbose=True, **kwargs):
+          start=True, title=None, verbose=True, location=True, **kwargs):
     """
     Allows serving one or more panel objects on a single server.
     The panels argument should be either a Panel object or a function
@@ -130,15 +130,19 @@ def serve(panels, port=0, websocket_origin=None, loop=None, show=True,
       Whether to open the server in a new browser tab on start
     start : boolean(optional, default=False)
       Whether to start the Server
-    title: str (optional, default=None)
-      An HTML title for the application
+    title: str or {str: str} (optional, default=None)
+      An HTML title for the application or a dictionary mapping
+      from the URL slug to a customized title
     verbose: boolean (optional, default=True)
       Whether to print the address and port
+    location : boolean or panel.io.location.Location
+      Whether to create a Location component to observe and
+      set the URL location.
     kwargs: dict
       Additional keyword arguments to pass to Server instance
     """
     return get_server(panels, port, websocket_origin, loop, show, start,
-                      title, verbose, **kwargs)
+                      title, verbose, location, **kwargs)
 
 
 class ProxyFallbackHandler(RequestHandler):
@@ -159,7 +163,8 @@ class ProxyFallbackHandler(RequestHandler):
 
 
 def get_server(panel, port=0, websocket_origin=None, loop=None,
-               show=False, start=False, title=None, verbose=False, **kwargs):
+               show=False, start=False, title=None, verbose=False,
+               location=True, **kwargs):
     """
     Returns a Server instance with this panel attached as the root
     app.
@@ -184,10 +189,14 @@ def get_server(panel, port=0, websocket_origin=None, loop=None,
       Whether to open the server in a new browser tab on start
     start : boolean(optional, default=False)
       Whether to start the Server
-    title: str (optional, default=None)
-      An HTML title for the application
+    title: str or {str: str} (optional, default=None)
+      An HTML title for the application or a dictionary mapping
+      from the URL slug to a customized title
     verbose: boolean (optional, default=False)
       Whether to report the address and port
+    location : boolean or panel.io.location.Location
+      Whether to create a Location component to observe and
+      set the URL location.
     kwargs: dict
       Additional keyword arguments to pass to Server instance
 
@@ -203,6 +212,16 @@ def get_server(panel, port=0, websocket_origin=None, loop=None,
     if isinstance(panel, dict):
         apps = {}
         for slug, app in panel.items():
+            if isinstance(title, dict):
+                try:
+                    title_ = title[slug]
+                except KeyError:
+                    raise KeyError(
+                        "Keys of the title dictionnary and of the apps "
+                        f"dictionary must match. No {slug} key found in the "
+                        "title dictionnary.") 
+            else:
+                title_ = title
             slug = slug if slug.startswith('/') else '/'+slug
             if 'flask' in sys.modules:
                 from flask import Flask
@@ -215,9 +234,9 @@ def get_server(panel, port=0, websocket_origin=None, loop=None,
                     extra_patterns.append(('^'+slug+'.*', ProxyFallbackHandler,
                                            dict(fallback=wsgi, proxy=slug)))
                     continue
-            apps[slug] = partial(_eval_panel, app, server_id, title)
+            apps[slug] = partial(_eval_panel, app, server_id, title_, location)
     else:
-        apps = {'/': partial(_eval_panel, panel, server_id, title)}
+        apps = {'/': partial(_eval_panel, panel, server_id, title, location)}
 
     opts = dict(kwargs)
     if loop:

@@ -110,8 +110,14 @@ class Select(SelectBase):
         msg.pop('options', None)
         return msg
 
-    def _get_embed_state(self, root, max_opts=3):
-        return (self, self._models[root.ref['id']][0], self.values,
+    def _get_embed_state(self, root, values=None, max_opts=3):
+        if values is None:
+            values = self.values
+        elif any(v not in self.values for v in values):
+            raise ValueError("Supplied embed states were not found "
+                             "in the %s widgets values list." %
+                             type(self).__name__)
+        return (self, self._models[root.ref['id']][0], values,
                 lambda x: x.value, 'value', 'cb_obj.value')
 
 
@@ -231,8 +237,14 @@ class _RadioGroupBase(Select):
                 msg['value'] = list(self.values)[index]
         return msg
 
-    def _get_embed_state(self, root, max_opts=3):
-        return (self, self._models[root.ref['id']][0], self.values,
+    def _get_embed_state(self, root, values=None, max_opts=3):
+        if values is None:
+            values = self.values
+        elif any(v not in self.values for v in values):
+            raise ValueError("Supplied embed states were not found in "
+                             "the %s widgets values list." %
+                             type(self).__name__)
+        return (self, self._models[root.ref['id']][0], values,
                 lambda x: x.active, 'active', 'cb_obj.active')
 
 
@@ -314,13 +326,16 @@ class ToggleGroup(Select):
     A ToggleGroup is a group of widgets which can be switched 'on' or 'off'.
 
     Two types of widgets are available through the widget_type argument :
-        - 'button' (default)
-        - 'box'
+        * `'button'` (default)
+        * `'box'`
 
     Two different behaviors are available through behavior argument:
-        - 'check' (default) : Any number of widgets can be selected. In this case value is a 'list' of objects
-        - 'radio' : One and only one widget is switched on. In this case value is an 'object'
-
+        * 'check' (default) : boolean
+           Any number of widgets can be selected. In this case value
+           is a 'list' of objects.
+        * 'radio' : boolean
+           One and only one widget is switched on. In this case value
+           is an 'object'.
     """
 
     _widgets_type = ['button', 'box']
@@ -359,25 +374,26 @@ class CrossSelector(CompositeWidget, MultiSelect):
     """
 
     width = param.Integer(default=600, allow_None=True, doc="""
-       The number of options shown at once (note this is the
-       only way to control the height of this widget)""")
+        The number of options shown at once (note this is the
+        only way to control the height of this widget)""")
 
     height = param.Integer(default=200, allow_None=True, doc="""
-       The number of options shown at once (note this is the
-       only way to control the height of this widget)""")
+        The number of options shown at once (note this is the
+        only way to control the height of this widget)""")
 
     filter_fn = param.Callable(default=re.search, doc="""
-       The filter function applied when querying using the text fields,
-       defaults to re.search. Function is two arguments, the query or
-       pattern and the item label.""")
+        The filter function applied when querying using the text
+        fields, defaults to re.search. Function is two arguments, the
+        query or pattern and the item label.""")
 
     size = param.Integer(default=10, doc="""
-       The number of options shown at once (note this is the
-       only way to control the height of this widget)""")
+        The number of options shown at once (note this is the only way
+        to control the height of this widget)""")
 
-    definition_order = param.Integer(default=True, doc=""" Whether to
-       preserve definition order after filtering. Disable to allow the
-       order of selection to define the order of the selected list.""")
+    definition_order = param.Integer(default=True, doc="""
+       Whether to preserve definition order after filtering. Disable
+       to allow the order of selection to define the order of the
+       selected list.""")
 
     def __init__(self, **params):
         super(CrossSelector, self).__init__(**params)

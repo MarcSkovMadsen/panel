@@ -14,7 +14,8 @@ from bokeh.models.layouts import GridBox as _BkGridBox
 from ..io import push, state, unlocked
 from ..layout import Panel, Row
 from ..links import Link
-from ..viewable import Viewable, Reactive, Layoutable
+from ..reactive import Reactive
+from ..viewable import Layoutable, Viewable
 from ..util import param_reprs
 
 
@@ -80,7 +81,8 @@ class PaneBase(Reactive):
         be placed in.""")
 
     object = param.Parameter(default=None, doc="""
-        The object being wrapped, which will be converted to a Bokeh model.""")
+        The object being wrapped, which will be converted to a
+        Bokeh model.""")
 
     # When multiple Panes apply to an object, the one with the highest
     # numerical priority is selected. The default is an intermediate value.

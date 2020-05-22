@@ -11,8 +11,8 @@ import param
 
 from ..layout import Row
 from ..io import push, state, unlocked
-from ..viewable import Reactive, Layoutable
-
+from ..reactive import Reactive
+from ..viewable import Layoutable
 
 
 class Widget(Reactive):
@@ -60,6 +60,27 @@ class Widget(Reactive):
         super(Widget, self).__init__(**params)
         self.param.watch(self._update_widget, self._manual_params)
 
+    @classmethod
+    def from_param(cls, parameter, **params):
+        """
+        Construct a widget from a Parameter and link the two
+        bi-directionally.
+        
+        Parameters
+        ----------
+        parameter: param.Parameter
+          A parameter to create the widget from.
+        params: dict
+          Keyword arguments to be passed to the widget constructor
+        
+        Returns
+        -------
+        Widget instance linked to the supplied parameter
+        """
+        from ..param import Param
+        layout = Param(parameter, widgets={parameter.name: dict(type=cls, **params)})
+        return layout[0]
+
     def _manual_update(self, events, model, doc, root, parent, comm):
         """
         Method for handling any manual update events, i.e. events triggered
@@ -105,7 +126,7 @@ class Widget(Reactive):
     def _filter_properties(self, properties):
         return [p for p in properties if p not in Layoutable.param]
 
-    def _get_embed_state(self, root, max_opts=3):
+    def _get_embed_state(self, root, values=None, max_opts=3):
         """
         Returns the bokeh model and a discrete set of value states
         for the widget.
@@ -114,6 +135,8 @@ class Widget(Reactive):
         ---------
         root: bokeh.model.Model
           The root model of the widget
+        values: list (optional)
+          An explicit list of value states to embed
         max_opts: int
           The maximum number of states the widget should return
 

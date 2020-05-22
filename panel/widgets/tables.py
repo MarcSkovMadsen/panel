@@ -17,26 +17,26 @@ from .base import Widget
 class DataFrame(Widget):
 
     editors = param.Dict(default={}, doc="""
-      Bokeh CellEditor to use for a particular column
-      (overrides the default chosen based on the type).""")
+        Bokeh CellEditor to use for a particular column
+        (overrides the default chosen based on the type).""")
 
     formatters = param.Dict(default={}, doc="""
-      Bokeh CellFormatter to use for a particular column
-      (overrides the default chosen based on the type).""")
+        Bokeh CellFormatter to use for a particular column
+        (overrides the default chosen based on the type).""")
 
     fit_columns = param.Boolean(default=True, doc="""
-      Whether columns should expand to the available width.
-      This results in no horizontal scrollbar showing up, but data
-      can get unreadable if there is no enough space available.""")
+        Whether columns should expand to the available width. This
+        results in no horizontal scrollbar showing up, but data can
+        get unreadable if there is no enough space available.""")
 
     selection = param.List(default=[], doc="""
-      The currently selected rows of the table.""")
+        The currently selected rows of the table.""")
 
     row_height = param.Integer(default=25, doc="""
-      The height of each table row.""")
+        The height of each table row.""")
 
     widths = param.Dict(default={}, doc="""
-      A mapping from column name to column width.""")
+        A mapping from column name to column width.""")
 
     value = param.Parameter(default=None)
 
@@ -47,7 +47,17 @@ class DataFrame(Widget):
 
     def __init__(self, value=None, **params):
         super(DataFrame, self).__init__(value=value, **params)
+        self.param.watch(self._validate, 'value')
+        self._validate(None)
         self._renamed_cols = {}
+
+    def _validate(self, event):
+        if self.value is None:
+            return
+        cols = self.value.columns
+        if len(cols) != len(cols.drop_duplicates()):
+            raise ValueError('Cannot display a pandas.DataFrame with '
+                             'duplicate column names.')
 
     def _get_columns(self):
         if self.value is None:
@@ -122,6 +132,7 @@ class DataFrame(Widget):
         return model
 
     def _manual_update(self, events, model, doc, root, parent, comm):
+        self._validate(None)
         for event in events:
             if event.name == 'value':
                 cds = model.source

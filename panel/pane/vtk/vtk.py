@@ -31,101 +31,94 @@ else:
 
 class VTKVolume(PaneBase):
 
+    ambient = param.Number(default=0.2, step=1e-2, doc="""
+        Value to control the ambient lighting. It is the light an
+        object gives even in the absence of strong light. It is
+        constant in all directions.""")
+
+    camera = param.Dict(doc="State of the rendered VTK camera.")
+
+    colormap = param.Selector(default='erdc_rainbow_bright', objects=PRESET_CMAPS, doc="""
+        Name of the colormap used to transform pixel value in color.""")
+
+    diffuse = param.Number(default=0.7, step=1e-2, doc="""
+        Value to control the diffuse Lighting. It relies on both the
+        light direction and the object surface normal.""")
+
+    display_volume = param.Boolean(default=True, doc="""
+        If set to True, the 3D respresentation of the volume is
+        displayed using ray casting.""")
+
+    display_slices = param.Boolean(default=False, doc="""
+        If set to true, the orthgonal slices in the three (X, Y, Z)
+        directions are displayed. Position of each slice can be
+        controlled using slice_(i,j,k) parameters.""")
+
+    edge_gradient = param.Number(default=0.4, bounds=(0, 1), step=1e-2, doc="""
+        Parameter to adjust the opacity of the volume based on the
+        gradient between voxels.""")
+
+    interpolation = param.Selector(default='fast_linear', objects=['fast_linear','linear','nearest'], doc="""
+        interpolation type for sampling a volume. `nearest`
+        interpolation will snap to the closest voxel, `linear` will
+        perform trilinear interpolation to compute a scalar value from
+        surrounding voxels.  `fast_linear` under WebGL 1 will perform
+        bilinear interpolation on X and Y but use nearest for Z. This
+        is slightly faster than full linear at the cost of no Z axis
+        linear interpolation.""")
+
+    mapper = param.Dict(doc="Lookup Table in format {low, high, palette}")
+
     max_data_size = param.Number(default=(256 ** 3) * 2 / 1e6, doc="""
         Maximum data size transfert allowed without subsampling""")
 
+    orientation_widget = param.Boolean(default=False, doc="""
+        Activate/Deactivate the orientation widget display.""")
+
     origin = param.Tuple(default=None, length=3, allow_None=True)
+
+    render_background = param.Color(default='#52576e', doc="""
+        Allows to specify the background color of the 3D rendering.
+        The value must be specified as an hexadecimal color string.""")
+
+    rescale = param.Boolean(default=False, doc="""
+        If set to True the colormap is rescaled beween min and max
+        value of the non-transparent pixel, otherwise  the full range
+        of the pixel values are used.""")
+
+    shadow = param.Boolean(default=True, doc="""
+        If set to False, then the mapper for the volume will not
+        perform shading computations, it is the same as setting
+        ambient=1, diffuse=0, specular=0.""")
+
+    sampling = param.Number(default=0.4, bounds=(0, 1), step=1e-2, doc="""
+        Parameter to adjust the distance between samples used for
+        rendering. The lower the value is the more precise is the
+        representation but it is more computationally intensive.""")
 
     spacing = param.Tuple(default=(1, 1, 1), length=3, doc="""
         Distance between voxel in each direction""")
 
-    render_background = param.Color(default='#52576e', doc="""
-        Allows to specify the background color of the 3D rendering. The value must be specified
-        as an hexadecimal color string
-    """)
-
-    colormap = param.Selector(default='erdc_rainbow_bright', objects=PRESET_CMAPS, doc="""
-        Name of the colormap used to transform pixel value in color
-    """)
-
-    rescale = param.Boolean(default=False, doc="""
-        If set to True the colormap is rescale beween min and max value of the non transparent pixels
-        Else the full range of the pixel values are used
-    """)
-
-    shadow = param.Boolean(default=True, doc="""
-        If set to False, then the mapper for the volume will not perform shading
-        computations, it is the same as setting ambient=1, diffuse=0, specular=0
-    """)
-
-    sampling = param.Number(default=0.4, bounds=(0, 1), step=1e-2, doc="""
-        Parameter to adjust the distance between samples used for rendering. The lower the value is
-        the more precise is the representation but it is more computationnaly intensive
-    """)
-
-    edge_gradient = param.Number(default=0.4, bounds=(0, 1), step=1e-2, doc="""
-        Parameter to adjust the opacity of the volume based on the gradient between voxels
-    """)
-
-    interpolation = param.Selector(default='fast_linear', objects=['fast_linear','linear','nearest'], doc="""
-        interpolation type for sampling a volume. `nearest` interpolation will snap to the closest voxel,
-        `linear` will perform trilinear interpolation to compute a scalar value from surrounding voxels.
-        `fast_linear` under WebGL 1 will perform bilinear interpolation on X and Y but use nearest
-        for Z. This is slightly faster than full linear at the cost of no Z axis linear interpolation.
-    """)
-
-    ambient = param.Number(default=0.2, step=1e-2, doc="""
-        Value to control the ambient lighting. It is the light an object gives even in the absence
-        of strong light. It is constant in all directions.
-    """)
-
-    diffuse = param.Number(default=0.7, step=1e-2, doc="""
-        Value to control the diffuse Lighting. It relies on both the light direction and the
-        object surface normal.
-    """)
-
     specular = param.Number(default=0.3, step=1e-2, doc="""
-        Value to control specular lighting. It is the light reflects back toward the camera when hitting the
-        object
-    """)
+        Value to control specular lighting. It is the light reflects
+        back toward the camera when hitting the object.""")
 
     specular_power = param.Number(default=8., doc="""
-        Specular power refers to how much light is reflected in a mirror like fashion,
-        rather than scattered randomly in a diffuse manner
-    """)
+        Specular power refers to how much light is reflected in a
+        mirror like fashion, rather than scattered randomly in a
+        diffuse manner.""")
 
     slice_i = param.Integer(per_instance=True, doc="""
-        Integer parameter to control the position of the slice normal to the X direction
-    """)
+        Integer parameter to control the position of the slice normal
+        to the X direction.""")
 
     slice_j = param.Integer(per_instance=True, doc="""
-        Integer parameter to control the position of the slice normal to the Y direction
-    """)
+        Integer parameter to control the position of the slice normal
+        to the Y direction.""")
 
     slice_k = param.Integer(per_instance=True, doc="""
-        Integer parameter to control the position of the slice normal to the Z direction
-    """)
-
-    display_volume = param.Boolean(default=True, doc="""
-        If set to True, the 3D respresentation of the volume is displayed using ray casting
-    """)
-
-    display_slices = param.Boolean(default=False, doc="""
-        If set to true, the orthgonal slices in the three (X, Y, Z) directions are displayed.
-        Postition of each slice can be controlled using slice_(i,j,k) parameters
-    """)
-
-    orientation_widget = param.Boolean(default=False, doc="""
-        Activate/Deactivate the orientation widget display
-    """)
-
-    camera = param.Dict(doc="""
-        State of the rendered VTK camera
-    """)
-
-    mapper = param.Dict(doc="""
-        Lookup Table in format {low, high, palette}
-    """)
+        Integer parameter to control the position of the slice normal
+        to the Z direction.""")
 
     _serializers = {}
 
@@ -303,37 +296,44 @@ class VTK(PaneBase):
         Parameters of the axes to construct in the 3d view.
 
         Must contain at least ``xticker``, ``yticker`` and ``zticker``.
-        A ``ticker`` is a dictionary which contains:
-            - ``ticks`` (array of numbers) - required. Positions in the scene coordinates
-            of the coresponding axe ticks
-            - ``labels`` (array of strings) - optional. Label displayed respectively to
-            the `ticks` positions.
 
-            If `labels` are not defined they are infered from the `ticks` array.
-        ``digits``: number of decimal digits when `ticks` are converted to `labels`.
-        ``fontsize``: size in pts of the ticks labels.
-        ``show_grid``: boolean. If true (default) the axes grid is visible.
-        ``grid_opactity``: float between 0-1. Defines the grid opacity.
-        ``axes_opactity``: float between 0-1. Defines the axes lines opacity.
+        A ``ticker`` is a dictionary which contains:
+          - ``ticks`` (array of numbers) - required.
+              Positions in the scene coordinates of the corresponding
+              axis' ticks.
+          - ``labels`` (array of strings) - optional.
+              Label displayed respectively to the `ticks` positions.
+              If `labels` are not defined they are infered from the
+              `ticks` array.
+          - ``digits``: number of decimal digits when `ticks` are converted to `labels`.
+          - ``fontsize``: size in pts of the ticks labels.
+          - ``show_grid``: boolean.
+                If true (default) the axes grid is visible.
+          - ``grid_opacity``: float between 0-1.
+                Defines the grid opacity.
+          - ``axes_opacity``: float between 0-1.
+                Defines the axes lines opacity.
     """)
 
     camera = param.Dict(doc="State of the rendered VTK camera.")
 
+    color_mappers = param.List(doc="""
+        List of color_mapper which will be display with colorbars in the
+        panel.""")
+
     enable_keybindings = param.Boolean(default=False, doc="""
         Activate/Deactivate keys binding.
 
-        Warning: These keys bind may not work as expected in a notebook
-        context if they interact with already binded keys.
-    """)
+        Warning: These keybindings may not work as expected in a
+                 notebook context if they interact with already
+                 bound keys.""")
 
     orientation_widget = param.Boolean(default=False, doc="""
-        Activate/Deactivate the orientation widget display.
-    """)
+        Activate/Deactivate the orientation widget display.""")
 
     serialize_on_instantiation = param.Boolean(default=True, doc="""
         Define if the object serialization occurs at panel instantiation
-        or when the panel is displayed.
-    """)
+        or when the panel is displayed.""")
 
     _updates = True
 
@@ -347,6 +347,7 @@ class VTK(PaneBase):
         self._vtkjs = None
         if self.serialize_on_instantiation:
             self._vtkjs = self._get_vtkjs()
+            self.color_mappers = self._construct_color_mappers()
 
     @classmethod
     def applies(cls, obj):
@@ -388,7 +389,7 @@ class VTK(PaneBase):
         self._legend = None
         super(VTK, self)._update_object(ref, doc, root, parent, comm)
 
-    def construct_colorbars(self, orientation='horizontal'):
+    def _construct_color_mappers(self):
         if self._legend is None:
             try:
                 from .vtkjs_serializer import construct_palettes
@@ -396,14 +397,23 @@ class VTK(PaneBase):
             except Exception:
                 self._legend = {}
         if self._legend:
-            from bokeh.models import Plot, LinearColorMapper, ColorBar, FixedTicker
+            from bokeh.models import LinearColorMapper
+            return [LinearColorMapper(name=k, low=v['low'], high=v['high'], palette=v['palette'])
+                        for k, v in self._legend.items()]
+        else:
+            return []
+
+    def construct_colorbars(self, orientation='horizontal'):
+        color_mappers = self._construct_color_mappers()
+        if len(color_mappers)>0:
+            from bokeh.models import Plot, ColorBar, FixedTicker
             if orientation == 'horizontal':
                 cbs = []
-                for k, v in self._legend.items():
-                    ticks = np.linspace(v['low'], v['high'], 5)
+                for color_mapper in color_mappers:
+                    ticks = np.linspace(color_mapper.low, color_mapper.high, 5)
                     cbs.append(ColorBar(
-                        color_mapper=LinearColorMapper(low=v['low'], high=v['high'], palette=v['palette']),
-                        title=k,
+                        color_mapper=color_mapper,
+                        title=color_mapper.name,
                         ticker=FixedTicker(ticks=ticks),
                         label_standoff=5, background_fill_alpha=0, orientation='horizontal', location=(0, 0)
                     ))
@@ -469,6 +479,7 @@ class VTK(PaneBase):
         self._vtkjs = None
         vtkjs = self._get_vtkjs()
         model.data = base64encode(vtkjs) if vtkjs is not None else vtkjs
+        self.color_mappers = self._construct_color_mappers()
 
     def export_vtkjs(self, filename='vtk_panel.vtkjs'):
         with open(filename, 'wb') as f:

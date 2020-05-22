@@ -112,7 +112,8 @@ _tests = [
     'scipy',
     'nbsmoke >=0.2.0',
     'pytest-cov',
-    'codecov'
+    'codecov',
+    'folium',
 ]
 
 extras_require = {
@@ -128,6 +129,10 @@ extras_require = {
         'jupyter_bokeh',
         'django',
         'pyvista',
+        'ipywidgets',
+        'ipywidgets_bokeh',
+        'ipyvolume',
+        'ipyleaflet'
     ],
     'tests': _tests,
     'recommended': _recommended,
@@ -136,6 +141,7 @@ extras_require = {
         'sphinx_holoviz_theme',
         'selenium',
         'phantomjs',
+        'graphviz',
         'lxml',
     ]
 }
