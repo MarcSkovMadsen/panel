@@ -830,8 +830,8 @@ BLUE_GREY = ColorPalette(
     contrast_a700=color.LIGHT_PRIMARY_TEXT,
 )
 
-ORSTED_AQUA = ColorPalette(
-    name="orsted_aqua",
+ENTERPRISE_AQUA = ColorPalette(
+    name="ENTERPRISE_aqua",
     color_50="#f1f9f8",
     color_100="#ddf0ef",
     color_200="#c7e6e4",
@@ -862,8 +862,8 @@ ORSTED_AQUA = ColorPalette(
     contrast_a700=color.DARK_PRIMARY_TEXT,
 )
 
-ORSTED_AUBERGINE = ColorPalette(
-    name="orsted aubergine",
+ENTERPRISE_AUBERGINE = ColorPalette(
+    name="ENTERPRISE aubergine",
     color_50="#eceaef",
     color_100="#d1c9d6",
     color_200="#b2a6bb",
@@ -894,8 +894,8 @@ ORSTED_AUBERGINE = ColorPalette(
     contrast_a700=color.LIGHT_PRIMARY_TEXT,
 )
 
-ORSTED_BLUE = ColorPalette(
-    name="orsted blue",
+ENTERPRISE_BLUE = ColorPalette(
+    name="ENTERPRISE blue",
     color_50="#e8f3fb",
     color_100="#c6e0f4",
     color_200="#a0cced",
@@ -926,8 +926,8 @@ ORSTED_BLUE = ColorPalette(
     contrast_a700=color.DARK_PRIMARY_TEXT,
 )
 
-ORSTED_SUN = ColorPalette(
-    name="orsted sun",
+ENTERPRISE_SUN = ColorPalette(
+    name="ENTERPRISE sun",
     color_50="fcebeb",
     color_100="f8cdcd",
     color_200="f4abab",
@@ -978,8 +978,8 @@ PALETTES = [
     RED,
     TEAL,
     YELLOW,
-    ORSTED_AQUA,
-    ORSTED_AUBERGINE,
-    ORSTED_BLUE,
-    ORSTED_SUN,
+    ENTERPRISE_AQUA,
+    ENTERPRISE_AUBERGINE,
+    ENTERPRISE_BLUE,
+    ENTERPRISE_SUN,
 ]
