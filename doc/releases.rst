@@ -1,8 +1,33 @@
 Releases
 ========
 
+Version 0.9.4
+-------------
 
-Version 0.9.2
+Date: 2020-04-01
+
+This is a minor release fixing a number of regressions and compatibility issues which continue to crop up due to the upgrade to Bokeh 2.0 Additionally this release completely overhauls how communication in notebook environments are handled, eliminating the need to register custom callbacks with inlined JS callbacks to sync properties. Many thanks to the contributors to this release including @hyamanieu, @maximlt, @mattpap and the maintainer @philippjfr.
+
+Enhancements:
+
+- Switch to using CommManager in notebook hugely simplifying comms in notebooks and reducing the amount of inlined Javascript (`#1171 <https://github.com/holoviz/panel/pull/1171>`_)
+- Add ability to serve Flask apps directly using pn.serve (`#1215 <https://github.com/holoviz/panel/pull/1215>`_) 
+
+Bug fixes:
+
+- Fix bug in Template which caused all roots to instantiate two models for each component (`#1216 <https://github.com/holoviz/panel/pull/1216>`_)
+- Fixed bug with Bokeh 2.0 DataPicker datetime format (`#1187 <https://github.com/holoviz/panel/pull/1187>`_)
+- Publish Panel.js to CDN to allow static HTML exports with CDN resources to work (`#1190 <https://github.com/holoviz/panel/pull/1190>`_)
+- Handle bug in rendering Vega models with singular dataset (`#1201 <https://github.com/holoviz/panel/pull/1201>`_)
+- Removed escaping workaround for HTML models resulting in broken static exports (`#1206 <https://github.com/holoviz/panel/pull/1206>`_)
+- Fixed bug closing Tabs (`#1208 <https://github.com/holoviz/panel/pull/1208>`_)
+- Embed Panel logo in server index.html (`#1209 <https://github.com/holoviz/panel/pull/1209>`_)
+
+Compatibility:
+
+- This release adds compatibility with Bokeh 2.0.1 which caused a regression in loading custom models
+
+Version 0.9.3
 -------------
 
 Date: 2020-03-21
